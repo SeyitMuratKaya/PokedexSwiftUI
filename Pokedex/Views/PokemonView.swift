@@ -13,9 +13,10 @@ struct PokemonView: View {
     
     var body: some View {
         VStack{
-            Text(networkManager.pokemon.name.uppercased())
+            Text(networkManager.pokeName.uppercased())
                 .font(.title)
-            PokemonImage(id: networkManager.pokemon.id)
+            PokemonImage(id: networkManager.pokeId)
+            Text(networkManager.pokeTypeName)
             Spacer()
         }.onAppear {
             networkManager.fetchPokemon(url: url)

@@ -11,8 +11,12 @@ import Combine
 class NetworkManager: ObservableObject{
     
     @Published var pokemon151 = [Result]()
-    @Published var pokemon = Pokemon(id: 0, name: "")
-    
+    @Published var pokeId:Int = 0
+    @Published var pokeName:String = ""
+    @Published var pokeTypes = [SingleType]()
+    @Published var pokeType = TypeName(name: "")
+    @Published var pokeTypeName: String = ""
+        
     func fetchPokemon(url:String){
         if let url = URL(string: url){
             let session = URLSession(configuration: .default)
@@ -24,8 +28,11 @@ class NetworkManager: ObservableObject{
                         do{
                             let result = try decoder.decode(Pokemon.self, from: safeData)
                             DispatchQueue.main.async {
-                                self.pokemon = result
-                                print(result)
+                                self.pokeId = result.id
+                                self.pokeName = result.name
+                                self.pokeTypes = result.types
+                                self.pokeType = result.types[0].type
+                                self.pokeTypeName = result.types[0].type.name
                             }
                         }catch{
                             print(error)
