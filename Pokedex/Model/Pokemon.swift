@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Pokemon: Hashable, Codable, Identifiable{
-    var id: Int
-    var name: String
+struct Pokemon:Codable,Identifiable{
+    var id:Int
+    var name:String
 }

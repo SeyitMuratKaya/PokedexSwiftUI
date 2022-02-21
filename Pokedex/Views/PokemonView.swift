@@ -8,16 +8,23 @@
 import SwiftUI
 
 struct PokemonView: View {
+    @ObservedObject var networkManager = NetworkManager()
+    var url:String
+    
     var body: some View {
         VStack{
-            PokemonImage()
-            Text("Name")
+            Text(networkManager.pokemon.name.uppercased())
+                .font(.title)
+            PokemonImage(id: networkManager.pokemon.id)
+            Spacer()
+        }.onAppear {
+            networkManager.fetchPokemon(url: url)
         }
     }
 }
 
 struct PokemonView_Previews: PreviewProvider {
     static var previews: some View {
-        PokemonView()
+        PokemonView(url:"")
     }
 }

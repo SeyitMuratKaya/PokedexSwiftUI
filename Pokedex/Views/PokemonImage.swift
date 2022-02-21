@@ -8,8 +8,10 @@
 import SwiftUI
 
 struct PokemonImage: View {
+    var id:Int
+    
     var body: some View {
-        AsyncImage(url: URL(string: "https://assets.pokemon.com/assets/cms2/img/pokedex/full/001.png")) { image in
+        AsyncImage(url: URL(string: "https://assets.pokemon.com/assets/cms2/img/pokedex/full/\(String(format: "%03d", id)).png")) { image in
             image.resizable()
                 .aspectRatio(contentMode: .fit)
                 .frame(height: 300)
@@ -22,6 +24,6 @@ struct PokemonImage: View {
 
 struct PokemonImage_Previews: PreviewProvider {
     static var previews: some View {
-        PokemonImage()
+        PokemonImage(id:001)
     }
 }
