@@ -17,6 +17,35 @@ class NetworkManager: ObservableObject{
     @Published var pokeType = TypeName(name: "")
     @Published var pokeTypeName1: String = ""
     @Published var pokeTypeName2: String?
+    @Published var pokemonEntries:[FlavorTextEntry] = []
+    @Published var pokemonEntryText:String = ""
+    
+    
+    func fetchEntry(url:String){
+        if let url = URL(string: url){
+            let session = URLSession(configuration: .default)
+            
+            let task = session.dataTask(with: url) { data, response, error in
+                if error == nil{
+                    let decoder = JSONDecoder()
+                    if let safeData = data{
+                        do{
+                            let result = try decoder.decode(PokemonEntry.self, from: safeData)
+                            DispatchQueue.main.async {
+                                self.pokemonEntryText = result.flavorTextEntries[0].flavorText
+//                                print(self.pokemonEntryText)
+                            }
+                        }catch{
+                            print(error)
+                        }
+                    }
+                    
+                }
+            }
+            task.resume()
+        }
+    }
+    
     
     func fetchPokemon(url:String){
         if let url = URL(string: url){

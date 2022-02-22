@@ -14,7 +14,7 @@ struct PokemonList: View {
         NavigationView{
             List(networkManager.pokemon151){ pokemon in
                 NavigationLink{
-                    PokemonView(url: pokemon.url)
+                    PokemonView(url: pokemon.url,name: pokemon.name)
                 }label: {
                     Text(pokemon.name)
                 }

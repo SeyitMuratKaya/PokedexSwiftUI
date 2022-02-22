@@ -15,6 +15,7 @@ struct Result:Codable,Identifiable{
     var id:String{
         return name
     }
+    
     var name:String
     var url:String
 }

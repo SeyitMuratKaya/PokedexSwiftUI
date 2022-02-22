@@ -10,6 +10,7 @@ import SwiftUI
 struct PokemonView: View {
     @ObservedObject var networkManager = NetworkManager()
     var url:String
+    var name:String
     var body: some View {
         
         ZStack{
@@ -40,26 +41,27 @@ struct PokemonView: View {
                 .foregroundColor(.white)
                 
                 PokemonImage(id: networkManager.pokeId)
-                    .offset(y: 70)
+                    .padding(.bottom, -70)
                     .zIndex(1)
                 Spacer()
                 
                 RoundedRectangle(cornerRadius: 25)
                     .fill(.white)
                     .ignoresSafeArea()
-                    .overlay(Text("deneme"))
+                    .overlay(Text(networkManager.pokemonEntryText))
                 
             }
         }
         .navigationBarTitleDisplayMode(.inline)
         .onAppear {
             networkManager.fetchPokemon(url: url)
+            networkManager.fetchEntry(url: "https://pokeapi.co/api/v2/pokemon-species/\(name)")
         }.tint(.black)
     }
 }
 
 struct PokemonView_Previews: PreviewProvider {
     static var previews: some View {
-        PokemonView(url:"https://pokeapi.co/api/v2/pokemon/1")
+        PokemonView(url:"https://pokeapi.co/api/v2/pokemon/1",name:"bulbasaur")
     }
 }

@@ -14,7 +14,7 @@ struct PokemonImage: View {
         AsyncImage(url: URL(string: "https://assets.pokemon.com/assets/cms2/img/pokedex/full/\(String(format: "%03d", id)).png")) { image in
             image.resizable()
                 .aspectRatio(contentMode: .fit)
-                .frame(height: 300)
+                .frame(height: 250)
                 
         } placeholder: {
             ProgressView()
@@ -24,6 +24,6 @@ struct PokemonImage: View {
 
 struct PokemonImage_Previews: PreviewProvider {
     static var previews: some View {
-        PokemonImage(id:001)
+        PokemonImage(id:001).previewLayout(.sizeThatFits)
     }
 }
