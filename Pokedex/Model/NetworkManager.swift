@@ -15,8 +15,9 @@ class NetworkManager: ObservableObject{
     @Published var pokeName:String = ""
     @Published var pokeTypes = [SingleType]()
     @Published var pokeType = TypeName(name: "")
-    @Published var pokeTypeName: String = ""
-        
+    @Published var pokeTypeName1: String = ""
+    @Published var pokeTypeName2: String?
+    
     func fetchPokemon(url:String){
         if let url = URL(string: url){
             let session = URLSession(configuration: .default)
@@ -32,7 +33,11 @@ class NetworkManager: ObservableObject{
                                 self.pokeName = result.name
                                 self.pokeTypes = result.types
                                 self.pokeType = result.types[0].type
-                                self.pokeTypeName = result.types[0].type.name
+                                self.pokeTypeName1 = result.types[0].type.name!
+                                if result.types.count > 1 {
+                                    self.pokeTypeName2 = result.types[1].type.name!
+//                                    print(self.pokeTypeName2)
+                                }
                             }
                         }catch{
                             print(error)

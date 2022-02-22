@@ -18,5 +18,5 @@ struct SingleType:Codable{
 }
 
 struct TypeName:Codable{
-    var name:String
+    var name:String?
 }
