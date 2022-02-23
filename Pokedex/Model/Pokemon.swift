@@ -11,6 +11,8 @@ struct Pokemon:Codable,Identifiable{
     var id:Int
     var name:String
     var types: [SingleType]
+    var height:Double
+    var weight:Double
 }
 
 struct SingleType:Codable{

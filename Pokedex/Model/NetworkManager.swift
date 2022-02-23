@@ -17,6 +17,8 @@ class NetworkManager: ObservableObject{
     @Published var pokeType = TypeName(name: "")
     @Published var pokeTypeName1: String = ""
     @Published var pokeTypeName2: String?
+    @Published var pokemonHeight:Double = 0.0
+    @Published var pokemonWeight:Double = 0.0
     @Published var pokemonEntries:[FlavorTextEntry] = []
     @Published var pokemonEntryText:String = ""
     
@@ -60,6 +62,8 @@ class NetworkManager: ObservableObject{
                             DispatchQueue.main.async {
                                 self.pokeId = result.id
                                 self.pokeName = result.name
+                                self.pokemonHeight = result.height
+                                self.pokemonWeight = result.weight
                                 self.pokeTypes = result.types
                                 self.pokeType = result.types[0].type
                                 self.pokeTypeName1 = result.types[0].type.name!
@@ -92,6 +96,9 @@ class NetworkManager: ObservableObject{
                             let result = try decoder.decode(Pokemon151.self, from: safeData)
                             DispatchQueue.main.async {
                                 self.pokemon151 = result.results
+//                                for i in 0...150{
+//                                    print("\"" + self.pokemon151[i].name + "\"" + ":" + "\"" + "\(i+1)" + "\"" + ",")
+//                                }
                             }
                         }catch{
                             print(error)

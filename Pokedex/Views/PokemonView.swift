@@ -44,18 +44,19 @@ struct PokemonView: View {
                     .padding(.bottom, -70)
                     .zIndex(1)
                 Spacer()
+                    
                 
                 RoundedRectangle(cornerRadius: 25)
                     .fill(.white)
                     .ignoresSafeArea()
-                    .overlay(Text(networkManager.pokemonEntryText))
+                    .overlay(PokemonDetail(height: networkManager.pokemonHeight, weight: networkManager.pokemonWeight))
                 
             }
         }
         .navigationBarTitleDisplayMode(.inline)
         .onAppear {
             networkManager.fetchPokemon(url: url)
-            networkManager.fetchEntry(url: "https://pokeapi.co/api/v2/pokemon-species/\(name)")
+//            networkManager.fetchEntry(url: "https://pokeapi.co/api/v2/pokemon-species/\(name)")
         }.tint(.black)
     }
 }
