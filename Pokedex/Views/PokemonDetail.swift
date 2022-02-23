@@ -11,6 +11,8 @@ struct PokemonDetail: View {
     
     var height:Double
     var weight:Double
+    var ability1:String
+    var ability2:String
     
     var body: some View {
         VStack{
@@ -19,24 +21,23 @@ struct PokemonDetail: View {
                     .foregroundColor(Color.gray)
                 Spacer()
                 Text("\(String(round(10 * height)/100)) m")
-                Spacer()
+//                Spacer()
             }.padding()
             HStack{
                 Text("Weight:")
                     .foregroundColor(Color.gray)
                 Spacer()
                 Text("\(String(round(10 * weight)/100)) kg")
-                Spacer()
+//                Spacer()
             }.padding()
             HStack{
                 Text("Abilities:")
                     .foregroundColor(Color.gray)
                 Spacer()
-                Text("Ability 1")
-                Text("Ability 2")
-                Spacer()
+                Text(ability1)
+                Text(ability2)
+//                Spacer()
             }.padding()
-//        Spacer()
         }
         .frame(height: UIScreen.main.bounds.size.width)
         .background(.white)
@@ -45,6 +46,6 @@ struct PokemonDetail: View {
 
 struct PokemonDetail_Previews: PreviewProvider {
     static var previews: some View {
-        PokemonDetail(height: 0, weight: 0)
+        PokemonDetail(height: 0, weight: 0,ability1: "deneme",ability2: "deneme")
     }
 }

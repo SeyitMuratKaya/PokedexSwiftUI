@@ -13,6 +13,13 @@ struct Pokemon:Codable,Identifiable{
     var types: [SingleType]
     var height:Double
     var weight:Double
+    var abilities:[AbilityElement]
+}
+struct AbilityElement:Codable{
+    var ability:AbilityName
+}
+struct AbilityName:Codable{
+    var name:String
 }
 
 struct SingleType:Codable{

@@ -21,6 +21,8 @@ class NetworkManager: ObservableObject{
     @Published var pokemonWeight:Double = 0.0
     @Published var pokemonEntries:[FlavorTextEntry] = []
     @Published var pokemonEntryText:String = ""
+    @Published var pokemonAbility1:String = ""
+    @Published var pokemonAbility2:String = ""
     
     
     func fetchEntry(url:String){
@@ -64,6 +66,8 @@ class NetworkManager: ObservableObject{
                                 self.pokeName = result.name
                                 self.pokemonHeight = result.height
                                 self.pokemonWeight = result.weight
+                                self.pokemonAbility1 = result.abilities[0].ability.name
+                                self.pokemonAbility2 = result.abilities[1].ability.name
                                 self.pokeTypes = result.types
                                 self.pokeType = result.types[0].type
                                 self.pokeTypeName1 = result.types[0].type.name!

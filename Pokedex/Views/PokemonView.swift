@@ -49,7 +49,7 @@ struct PokemonView: View {
                 RoundedRectangle(cornerRadius: 25)
                     .fill(.white)
                     .ignoresSafeArea()
-                    .overlay(PokemonDetail(height: networkManager.pokemonHeight, weight: networkManager.pokemonWeight))
+                    .overlay(PokemonDetail(height: networkManager.pokemonHeight, weight: networkManager.pokemonWeight,ability1: networkManager.pokemonAbility1,ability2: networkManager.pokemonAbility2))
                 
             }
         }

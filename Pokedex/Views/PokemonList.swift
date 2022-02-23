@@ -25,6 +25,7 @@ struct PokemonList: View {
                             ProgressView()
                         }
                         Text(pokemon.name)
+                        Text("#" + PokemonId[pokemon.name]!)
                         
                         
                     }
