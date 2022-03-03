@@ -48,16 +48,19 @@ struct PokemonView: View {
                 
                 RoundedRectangle(cornerRadius: 25)
                     .fill(.white)
+                    .padding()
                     .ignoresSafeArea()
-                    .overlay(PokemonDetail(height: networkManager.pokemonHeight, weight: networkManager.pokemonWeight,ability1: networkManager.pokemonAbility1,ability2: networkManager.pokemonAbility2))
+                    .overlay(PokemonDetail(height: networkManager.pokemonHeight, weight: networkManager.pokemonWeight,ability1: networkManager.pokemonAbility1,ability2: networkManager.pokemonAbility2)
+                                .padding()
+                    )
                 
             }
         }
         .navigationBarTitleDisplayMode(.inline)
         .onAppear {
             networkManager.fetchPokemon(url: url)
-//            networkManager.fetchEntry(url: "https://pokeapi.co/api/v2/pokemon-species/\(name)")
-        }.tint(.black)
+        }
+        
     }
 }
 

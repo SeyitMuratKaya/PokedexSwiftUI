@@ -21,26 +21,30 @@ struct PokemonDetail: View {
                     .foregroundColor(Color.gray)
                 Spacer()
                 Text("\(String(round(10 * height)/100)) m")
-//                Spacer()
-            }.padding()
+                Spacer()
+            }
+            .padding()
+            
             HStack{
                 Text("Weight:")
                     .foregroundColor(Color.gray)
                 Spacer()
                 Text("\(String(round(10 * weight)/100)) kg")
-//                Spacer()
-            }.padding()
+                Spacer()
+            }
+            .padding()
+            
             HStack{
                 Text("Abilities:")
                     .foregroundColor(Color.gray)
                 Spacer()
                 Text(ability1)
                 Text(ability2)
-//                Spacer()
-            }.padding()
+                Spacer()
+            }
+            .padding()
         }
         .frame(height: UIScreen.main.bounds.size.width)
-        .background(.white)
     }
 }
 

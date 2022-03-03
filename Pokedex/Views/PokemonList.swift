@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct PokemonList: View {
-    @ObservedObject var networkManager = NetworkManager()
+    @StateObject var networkManager = NetworkManager()
     @State private var searchText = ""
     
     var body: some View {
@@ -27,7 +27,6 @@ struct PokemonList: View {
                         Text(pokemon.name)
                         Text("#" + PokemonId[pokemon.name]!)
                         
-                        
                     }
                     
                 }
@@ -42,12 +41,12 @@ struct PokemonList: View {
         }
     }
     var searchResults: [Result] {
-            if searchText.isEmpty {
-                return networkManager.pokemon151
-            } else {
-                return networkManager.pokemon151.filter { $0.name.contains(searchText) }
-            }
+        if searchText.isEmpty {
+            return networkManager.pokemon151
+        } else {
+            return networkManager.pokemon151.filter { $0.name.contains(searchText) }
         }
+    }
 }
 
 struct PokemonList_Previews: PreviewProvider {
