@@ -18,7 +18,7 @@ struct PokemonDetail: View {
         VStack{
             HStack{
                 Text("Height:")
-                    .foregroundColor(Color.gray)
+                    .foregroundColor(.gray)
                 Spacer()
                 Text("\(String(round(10 * height)/100)) m")
                 Spacer()
@@ -27,7 +27,7 @@ struct PokemonDetail: View {
             
             HStack{
                 Text("Weight:")
-                    .foregroundColor(Color.gray)
+                    .foregroundColor(.gray)
                 Spacer()
                 Text("\(String(round(10 * weight)/100)) kg")
                 Spacer()
@@ -36,7 +36,7 @@ struct PokemonDetail: View {
             
             HStack{
                 Text("Abilities:")
-                    .foregroundColor(Color.gray)
+                    .foregroundColor(.gray)
                 Spacer()
                 Text(ability1)
                 Text(ability2)

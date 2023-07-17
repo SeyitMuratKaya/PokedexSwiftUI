@@ -1,5 +1,5 @@
 //
-//  Pokemon.swift
+//  Pokemon151.swift
 //  Pokedex
 //
 //  Created by Seyit Murat Kaya on 21.02.2022.
@@ -7,25 +7,27 @@
 
 import Foundation
 
-struct Pokemon:Codable,Identifiable{
-    var id:Int
-    var name:String
-    var types: [SingleType]
-    var height:Double
-    var weight:Double
-    var abilities:[AbilityElement]
-}
-struct AbilityElement:Codable{
-    var ability:AbilityName
-}
-struct AbilityName:Codable{
-    var name:String
+struct Pokemon:Codable, Hashable{
+    let id: Int
+    let name: String
+    let types: [PType]
+    let height: Int
+    let weight: Int
+    let stats: [Stat]
 }
 
-struct SingleType:Codable{
-    var type: TypeName
+struct PType: Codable, Hashable {
+    let slot: Int
+    let type: Species
 }
 
-struct TypeName:Codable{
-    var name:String?
+struct Species: Codable, Hashable {
+    let name: String
+    let url: String
+}
+
+struct Stat: Codable, Hashable {
+    let baseStat: Int
+    let effort: Int
+    let stat: Species
 }
