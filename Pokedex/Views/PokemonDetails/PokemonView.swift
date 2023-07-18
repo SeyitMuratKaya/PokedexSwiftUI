@@ -12,8 +12,9 @@ struct PokemonView: View {
     
     @State private var pokemon: Pokemon?
     @State private var pokemonSpecies: PokemonSpecies?
+    @State private var evolutionChain: EvolutionModel?
     
-    @State private var tabSelection: InfoCategories = .evolution
+    @State private var tabSelection: InfoCategories = .about
     
     var pokedexId: Int = 1
     
@@ -86,7 +87,7 @@ struct PokemonView: View {
             TabView(selection: $tabSelection) {
                 AboutView(pokedexEntry: pokemonSpecies?.flavorTextEntries[0].flavorText, height: pokemon?.height, weight: pokemon?.weight, genderRate: pokemonSpecies?.genderRate).tag(InfoCategories.about)
                 BaseStatsView(stats: pokemon?.stats).tag(InfoCategories.stats)
-                EvolutionView().tag(InfoCategories.evolution)
+                EvolutionView(evolutionChain: evolutionChain).tag(InfoCategories.evolution)
                 MovesView().tag(InfoCategories.moves)
             }
             .animation(.easeInOut, value: tabSelection)
@@ -98,6 +99,7 @@ struct PokemonView: View {
             do {
                 pokemon = try await fetchPokemon(withId: pokedexId)
                 pokemonSpecies = try await fetchPokemonSpecies(withId: pokedexId)
+                evolutionChain = try await fetchEvolutionChain(fromUrl: pokemonSpecies?.evolutionChain.url ?? "")
             } catch PokeError.invalidUrl {
                 print("invalid url")
             }catch PokeError.invalidResponse {
@@ -161,6 +163,29 @@ extension PokemonView {
             decoder.keyDecodingStrategy = .convertFromSnakeCase
             let pokemonSpecies = try decoder.decode(PokemonSpecies.self, from: data)
             return pokemonSpecies
+        }catch {
+            throw PokeError.invalidData
+        }
+    }
+    
+    func fetchEvolutionChain(fromUrl url: String) async throws -> EvolutionModel {
+        let endpoint = url
+        
+        guard let url = URL(string: endpoint) else {
+            throw PokeError.invalidUrl
+        }
+        
+        let (data, response) = try await URLSession.shared.data(from: url)
+        
+        guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
+            throw PokeError.invalidResponse
+        }
+        
+        do {
+            let decoder = JSONDecoder()
+            decoder.keyDecodingStrategy = .convertFromSnakeCase
+            let evolutionChain = try decoder.decode(EvolutionModel.self, from: data)
+            return evolutionChain
         }catch {
             throw PokeError.invalidData
         }
