@@ -86,9 +86,9 @@ struct PokemonView: View {
             
             TabView(selection: $tabSelection) {
                 AboutView(pokedexEntry: pokemonSpecies?.flavorTextEntries[0].flavorText, height: pokemon?.height, weight: pokemon?.weight, genderRate: pokemonSpecies?.genderRate).tag(InfoCategories.about)
-                BaseStatsView(stats: pokemon?.stats).tag(InfoCategories.stats)
+                BaseStatsView(stats: pokemon?.stats,pokemonType: pokemon?.types[0].type.name,pokemonName: pokemon?.name).tag(InfoCategories.stats)
                 EvolutionView(evolutionChain: evolutionChain).tag(InfoCategories.evolution)
-                MovesView().tag(InfoCategories.moves)
+                MovesView(moves: pokemon?.moves).tag(InfoCategories.moves)
             }
             .animation(.easeInOut, value: tabSelection)
             .tabViewStyle(.page(indexDisplayMode: .never))
@@ -107,18 +107,10 @@ struct PokemonView: View {
             }catch PokeError.invalidData {
                 print("invalid data")
             }catch {
-                print("unexpected error")
+                print("unexpected error from PokemonView")
             }
         }
     }
-}
-
-enum InfoCategories: String, CaseIterable, Identifiable {
-    case about = "About"
-    case stats = "Stats"
-    case evolution = "Evolution"
-    case moves = "Moves"
-    var id: Self { self }
 }
 
 extension PokemonView {
@@ -195,20 +187,5 @@ extension PokemonView {
 struct PokemonView_Previews: PreviewProvider {
     static var previews: some View {
         PokemonView()
-    }
-}
-
-struct TypeLabel: ViewModifier {
-    var fontSize: CGFloat?
-    
-    func body(content: Content) -> some View {
-        content
-            .font(.system(size: fontSize ?? 10))
-            .padding(.horizontal, 16.0)
-            .padding(.vertical, 4.0)
-            .fontWeight(.semibold)
-            .foregroundColor(.white)
-            .background(.ultraThinMaterial)
-            .cornerRadius(48)
     }
 }

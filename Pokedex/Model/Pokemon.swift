@@ -14,6 +14,7 @@ struct Pokemon:Codable, Hashable{
     let height: Int
     let weight: Int
     let stats: [Stat]
+    let moves: [Move]
 }
 
 struct PType: Codable, Hashable {
@@ -30,4 +31,8 @@ struct Stat: Codable, Hashable {
     let baseStat: Int
     let effort: Int
     let stat: Species
+}
+
+struct Move: Codable, Hashable {
+    let move: Species
 }

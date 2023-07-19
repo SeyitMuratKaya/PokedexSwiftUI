@@ -22,5 +22,5 @@ struct Chain: Codable {
 
 // MARK: - EvolutionDetail
 struct EvolutionDetail: Codable {
-    let minLevel: Int
+    let minLevel: Int?
 }

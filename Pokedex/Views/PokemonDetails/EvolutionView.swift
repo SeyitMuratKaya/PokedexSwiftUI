@@ -11,26 +11,35 @@ struct EvolutionView: View {
     var evolutionChain: EvolutionModel?
     @State private var chainElements: [ChainElement] = []
     
-    func printChain(){
+    func printChains(){
         chainElements.removeAll()
-        
-        var chain = evolutionChain?.chain.evolvesTo
+
+        var evolvesToArray = evolutionChain?.chain.evolvesTo
+        let evolveCopy = evolvesToArray
         var firstPokemon = evolutionChain?.chain.species.name
         var firstPokemonUrl = evolutionChain?.chain.species.url
-        
-        while(!(chain?.isEmpty ?? true)){
-            let secondPokemon = chain?[0].species.name
-            let secondPokemonUrl = chain?[0].species.url
-            let minLevel = chain?[0].evolutionDetails[0].minLevel
-            
-            chainElements.append(ChainElement(from: firstPokemon, fromUrl: firstPokemonUrl, minLevel: minLevel ?? 0, to: secondPokemon,toUrl: secondPokemonUrl))
-            firstPokemon = secondPokemon
-            firstPokemonUrl = secondPokemonUrl
-            
-            chain = chain?[0].evolvesTo
+
+        let count = evolvesToArray?.count ?? 0
+
+        for i in 0..<count {
+            while(!(evolvesToArray?.isEmpty ?? true)) {
+                let secondPokemon = evolvesToArray?[i].species.name
+                let secondPokemonUrl = evolvesToArray?[i].species.url
+                let minLevel = evolvesToArray?[i].evolutionDetails[0].minLevel
+
+                chainElements.append(ChainElement(from: firstPokemon, fromUrl: firstPokemonUrl, minLevel: minLevel ?? 0, to: secondPokemon, toUrl: secondPokemonUrl))
+
+                firstPokemon = secondPokemon
+                firstPokemonUrl = secondPokemonUrl
+
+                evolvesToArray = evolvesToArray?[0].evolvesTo
+            }
+            firstPokemon = evolutionChain?.chain.species.name
+            firstPokemonUrl = evolutionChain?.chain.species.url
+            evolvesToArray = evolveCopy
         }
     }
-            
+    
     var body: some View {
         ScrollView{
             VStack {
@@ -66,17 +75,9 @@ struct EvolutionView: View {
         .cornerRadius(16)
         .padding()
         .onAppear {
-            printChain()
+            printChains()
         }
     }
-}
-
-struct ChainElement: Hashable {
-    var from: String?
-    var fromUrl: String?
-    var minLevel: Int
-    var to: String?
-    var toUrl: String?
 }
 
 struct EvolutionView_Previews: PreviewProvider {

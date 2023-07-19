@@ -32,7 +32,10 @@ struct PokemonList: View {
         }
         .task {
             do {
-                pokemons = try await fetchPokemons(from: 1, to: 4)
+                pokemons = try await PokemonAPI.fetchPokemons(from: 1, to: 151)
+                pokemons?.sort {
+                    $0.id < $1.id
+                }
             } catch PokeError.invalidUrl {
                 print("invalid url")
             }catch PokeError.invalidResponse {
@@ -40,7 +43,7 @@ struct PokemonList: View {
             }catch PokeError.invalidData {
                 print("invalid data")
             }catch {
-                print("unexpected error")
+                print("unexpected error from PokemonList")
             }
         }
     }
@@ -79,12 +82,6 @@ extension PokemonList {
         return tempPokemons
     }
     
-}
-
-enum PokeError: Error {
-    case invalidUrl
-    case invalidResponse
-    case invalidData
 }
 
 struct PokemonList_Previews: PreviewProvider {

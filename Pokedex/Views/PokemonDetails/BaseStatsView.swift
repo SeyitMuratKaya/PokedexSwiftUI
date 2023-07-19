@@ -9,6 +9,8 @@ import SwiftUI
 
 struct BaseStatsView: View {
     var stats: [Stat]?
+    var pokemonType: String?
+    var pokemonName: String?
     
     var body: some View {
         ScrollView{
@@ -19,14 +21,14 @@ struct BaseStatsView: View {
                             Text(stat.stat.name.capitalized)
                             Text("\(stat.baseStat)")
                             ProgressView(value: Double(stat.baseStat) ,total: 100.0)
-                                .tint(.red)
+                                .tint(Color(pokemonType ??  "red"))
                         }
                     }
                 }
                 Text("Type Defenses")
                     .font(.title3)
                     .bold()
-                Text("Type effectiveness of each type on Bulbasaur")
+                Text("Type effectiveness of each type on \(pokemonName?.capitalized ?? "")")
                     .font(.subheadline)
                 HStack{
                     //will be implemented later
