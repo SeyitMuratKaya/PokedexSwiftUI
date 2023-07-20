@@ -8,9 +8,7 @@
 import Foundation
 
 struct ChainElement: Hashable {
-    var from: String?
-    var fromUrl: String?
+    var fromPokemon: Pokemon?
     var minLevel: Int
-    var to: String?
-    var toUrl: String?
+    var toPokemon: Pokemon?
 }

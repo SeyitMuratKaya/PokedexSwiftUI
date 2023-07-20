@@ -35,6 +35,26 @@ class PokemonAPI {
         }
     }
     
+    static func fetchPokemon(withName name: String) async throws -> Pokemon {
+        
+        guard let url = URL(string: endpoint + "pokemon/\(name)") else {
+            throw PokeError.invalidUrl
+        }
+        
+        let (data, response) = try await URLSession.shared.data(from: url)
+        
+        guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
+            throw PokeError.invalidResponse
+        }
+        
+        do {
+            let pokemon = try decoder.decode(Pokemon.self, from: data)
+            return pokemon
+        } catch {
+            throw PokeError.invalidData
+        }
+    }
+    
     static func fetchPokemons(from: Int, to: Int) async throws -> [Pokemon] {
         return try await withThrowingTaskGroup(of: Pokemon.self) { group in
             var pokemons: [Pokemon] = []
@@ -87,6 +107,44 @@ class PokemonAPI {
         do {
             let evolutionChain = try decoder.decode(EvolutionModel.self, from: data)
             return evolutionChain
+        }catch {
+            throw PokeError.invalidData
+        }
+    }
+    
+    static func fetchMoves(for moves: [Move]) async throws -> [MoveDetail] {
+        return try await withThrowingTaskGroup(of: MoveDetail.self) { group in
+            var tempMoves: [MoveDetail] = []
+            for move in moves {
+                group.addTask {
+                    try await fetchMove(for: move.move.url)
+                }
+            }
+            
+            for try await move in group {
+                tempMoves.append(move)
+            }
+            
+            return tempMoves
+        }
+    }
+    
+    static func fetchMove(for moveUrl: String) async throws -> MoveDetail {
+        let endpoint = moveUrl
+        
+        guard let url = URL(string: endpoint) else {
+            throw PokeError.invalidUrl
+        }
+        
+        let (data, response) = try await URLSession.shared.data(from: url)
+        
+        guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
+            throw PokeError.invalidResponse
+        }
+        
+        do {
+            let move = try decoder.decode(MoveDetail.self, from: data)
+            return move
         }catch {
             throw PokeError.invalidData
         }

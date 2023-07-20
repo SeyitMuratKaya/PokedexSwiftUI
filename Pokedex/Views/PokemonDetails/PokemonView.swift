@@ -72,7 +72,7 @@ struct PokemonView: View {
                 }
                 .padding(.horizontal)
                 
-                PokemonImage(id: pokemon?.id,scaleWidth: 2.5, scaleHeight: 2.5)
+                PokemonImage(id: pokemon?.id ?? 1,scaleWidth: 2.5, scaleHeight: 2.5)
                 .padding(.top)
             }
             Picker("Info", selection: $tabSelection) {
