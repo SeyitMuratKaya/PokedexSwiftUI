@@ -8,7 +8,7 @@
 import Foundation
 
 class PokemonAPI {
-    private static let endpoint = "https://pokeapi.co/api/v2/pokemon/"
+    private static let endpoint = "https://pokeapi.co/api/v2/"
     private static let decoder: JSONDecoder = {
         let decoder = JSONDecoder()
         decoder.keyDecodingStrategy = .convertFromSnakeCase
@@ -16,7 +16,8 @@ class PokemonAPI {
     }()
     
     static func fetchPokemon(withId id: Int) async throws -> Pokemon {
-        guard let url = URL(string: endpoint + "\(id)") else {
+
+        guard let url = URL(string: endpoint + "pokemon/\(id)") else {
             throw PokeError.invalidUrl
         }
         
@@ -48,6 +49,46 @@ class PokemonAPI {
             }
             
             return pokemons
+        }
+    }
+    
+    static func fetchPokemonSpecies(withId id: Int) async throws -> PokemonSpecies{
+        guard let url = URL(string: endpoint + "pokemon-species/\(id)") else {
+            throw PokeError.invalidUrl
+        }
+        
+        let (data, response) = try await URLSession.shared.data(from: url)
+        
+        guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
+            throw PokeError.invalidResponse
+        }
+        
+        do {
+            let pokemonSpecies = try decoder.decode(PokemonSpecies.self, from: data)
+            return pokemonSpecies
+        }catch {
+            throw PokeError.invalidData
+        }
+    }
+    
+    static func fetchEvolutionChain(fromUrl url: String) async throws -> EvolutionModel {
+        let endpoint = url
+        
+        guard let url = URL(string: endpoint) else {
+            throw PokeError.invalidUrl
+        }
+        
+        let (data, response) = try await URLSession.shared.data(from: url)
+        
+        guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
+            throw PokeError.invalidResponse
+        }
+        
+        do {
+            let evolutionChain = try decoder.decode(EvolutionModel.self, from: data)
+            return evolutionChain
+        }catch {
+            throw PokeError.invalidData
         }
     }
 }

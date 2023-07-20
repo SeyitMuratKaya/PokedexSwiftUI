@@ -15,15 +15,12 @@ struct AboutView: View {
     var genderRate: Int?
     
     var genderRatePercent: Double {
-        var percent: Double = 0
-        
-        if(genderRate == -1){
-            return 0
-        }else {
-            percent = (Double((genderRate ?? 5)) * 100.0)/8.0
+        if let genderRate {
+            if genderRate > 0 {
+                return (Double(genderRate) * 100.0)/8.0
+            }
         }
-        
-        return percent
+        return 0
     }
     
     var heightConverted: String {

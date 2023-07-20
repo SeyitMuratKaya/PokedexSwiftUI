@@ -10,13 +10,12 @@ import SwiftUI
 struct PokemonView: View {
     @Environment(\.dismiss) private var dismiss
     
-    @State private var pokemon: Pokemon?
     @State private var pokemonSpecies: PokemonSpecies?
     @State private var evolutionChain: EvolutionModel?
     
     @State private var tabSelection: InfoCategories = .about
     
-    var pokedexId: Int = 1
+    var pokemon: Pokemon?
     
     var body: some View {
         VStack(spacing: 0){
@@ -73,7 +72,7 @@ struct PokemonView: View {
                 }
                 .padding(.horizontal)
                 
-                PokemonImage(id: pokedexId,scaleWidth: 2.5, scaleHeight: 2.5)
+                PokemonImage(id: pokemon?.id,scaleWidth: 2.5, scaleHeight: 2.5)
                 .padding(.top)
             }
             Picker("Info", selection: $tabSelection) {
@@ -97,9 +96,8 @@ struct PokemonView: View {
         .background(Color(pokemon?.types[0].type.name ?? "grass"))
         .task {
             do {
-                pokemon = try await fetchPokemon(withId: pokedexId)
-                pokemonSpecies = try await fetchPokemonSpecies(withId: pokedexId)
-                evolutionChain = try await fetchEvolutionChain(fromUrl: pokemonSpecies?.evolutionChain.url ?? "")
+                pokemonSpecies = try await PokemonAPI.fetchPokemonSpecies(withId: pokemon?.id ?? 1)
+                evolutionChain = try await PokemonAPI.fetchEvolutionChain(fromUrl: pokemonSpecies?.evolutionChain.url ?? "")
             } catch PokeError.invalidUrl {
                 print("invalid url")
             }catch PokeError.invalidResponse {
@@ -109,77 +107,6 @@ struct PokemonView: View {
             }catch {
                 print("unexpected error from PokemonView")
             }
-        }
-    }
-}
-
-extension PokemonView {
-    func fetchPokemon(withId id: Int) async throws -> Pokemon {
-        let endpoint = "https://pokeapi.co/api/v2/pokemon/\(id)"
-        
-        guard let url = URL(string: endpoint) else {
-            throw PokeError.invalidUrl
-        }
-        
-        let (data, response) = try await URLSession.shared.data(from: url)
-        
-        guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
-            throw PokeError.invalidResponse
-        }
-        
-        do {
-            let decoder = JSONDecoder()
-            decoder.keyDecodingStrategy = .convertFromSnakeCase
-            let pokemon = try decoder.decode(Pokemon.self, from: data)
-            return pokemon
-        }catch {
-            throw PokeError.invalidData
-        }
-    }
-    
-    func fetchPokemonSpecies(withId id: Int) async throws -> PokemonSpecies{
-        let endpoint = "https://pokeapi.co/api/v2/pokemon-species/\(id)"
-        
-        guard let url = URL(string: endpoint) else {
-            throw PokeError.invalidUrl
-        }
-        
-        let (data, response) = try await URLSession.shared.data(from: url)
-        
-        guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
-            throw PokeError.invalidResponse
-        }
-        
-        do {
-            let decoder = JSONDecoder()
-            decoder.keyDecodingStrategy = .convertFromSnakeCase
-            let pokemonSpecies = try decoder.decode(PokemonSpecies.self, from: data)
-            return pokemonSpecies
-        }catch {
-            throw PokeError.invalidData
-        }
-    }
-    
-    func fetchEvolutionChain(fromUrl url: String) async throws -> EvolutionModel {
-        let endpoint = url
-        
-        guard let url = URL(string: endpoint) else {
-            throw PokeError.invalidUrl
-        }
-        
-        let (data, response) = try await URLSession.shared.data(from: url)
-        
-        guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
-            throw PokeError.invalidResponse
-        }
-        
-        do {
-            let decoder = JSONDecoder()
-            decoder.keyDecodingStrategy = .convertFromSnakeCase
-            let evolutionChain = try decoder.decode(EvolutionModel.self, from: data)
-            return evolutionChain
-        }catch {
-            throw PokeError.invalidData
         }
     }
 }

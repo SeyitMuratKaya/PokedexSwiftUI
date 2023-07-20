@@ -8,8 +8,11 @@
 import SwiftUI
 
 struct ContentView: View {
+    @StateObject private var navigationModel = NavigationModel()
+    
     var body: some View {
         PokemonList()
+            .environmentObject(navigationModel)
     }
 }
 

@@ -9,14 +9,14 @@ import SwiftUI
 
 struct PokemonList: View {
     @State private var pokemons: [Pokemon]?
-    @State private var path = NavigationPath()
+    @EnvironmentObject private var navigationModel: NavigationModel
     
     var body: some View {
-        NavigationStack(path: $path){
+        NavigationStack(path: $navigationModel.path){
             List {
                 ForEach(pokemons ?? [], id: \.name) { pokemon in
                     Button { // (not using navigationlink) trick for removing navigation arrow
-                        path.append(pokemon)
+                        navigationModel.path.append(pokemon)
                     } label: {
                         PokemonListItem(name: pokemon.name,pokedexId: pokemon.id,types: pokemon.types)
                             .cornerRadius(8)
@@ -27,7 +27,7 @@ struct PokemonList: View {
             .listStyle(.plain)
             .navigationTitle("Pokemons")
             .navigationDestination(for: Pokemon.self, destination: { pokemon in
-                PokemonView(pokedexId: pokemon.id)
+                PokemonView(pokemon: pokemon)
             })
         }
         .task {
@@ -47,41 +47,6 @@ struct PokemonList: View {
             }
         }
     }
-}
-
-extension PokemonList {
-    func fetchPokemon(withId id: Int) async throws -> Pokemon {
-        let endpoint = "https://pokeapi.co/api/v2/pokemon/\(id)"
-        
-        guard let url = URL(string: endpoint) else {
-            throw PokeError.invalidUrl
-        }
-        
-        let (data, response) = try await URLSession.shared.data(from: url)
-        
-        guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
-            throw PokeError.invalidResponse
-        }
-        
-        do {
-            let decoder = JSONDecoder()
-            decoder.keyDecodingStrategy = .convertFromSnakeCase
-            let pokemon = try decoder.decode(Pokemon.self, from: data)
-            return pokemon
-        }catch {
-            throw PokeError.invalidData
-        }
-    }
-    
-    func fetchPokemons(from: Int, to: Int) async throws -> [Pokemon] {
-        var tempPokemons: [Pokemon] = []
-        for id in from...to {
-            let pokemon = try await fetchPokemon(withId: id)
-            tempPokemons.append(pokemon)
-        }
-        return tempPokemons
-    }
-    
 }
 
 struct PokemonList_Previews: PreviewProvider {
