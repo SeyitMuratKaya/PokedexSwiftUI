@@ -52,5 +52,6 @@ struct PokemonList: View {
 struct PokemonList_Previews: PreviewProvider {
     static var previews: some View {
         PokemonList()
+            .environmentObject(NavigationModel.shared)
     }
 }

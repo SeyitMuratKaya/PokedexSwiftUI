@@ -30,24 +30,35 @@ struct MovesView: View {
             ForEach(detailResults, id: \.id){ move in
                 VStack(alignment: .leading,spacing: 0){
                     HStack{
-                        Text(move.name.capitalized)
+                        Text(move.name.uppercased())
                             .font(.title3)
-                        Text("-")
-                        Text(move.type.name)
-                        Text(move.damageClass.name)
+                            .bold()
+                        Spacer()
+                        Text(move.type.name.capitalized)
+                            .font(.subheadline)
+                            .padding(.horizontal,8)
+                            .padding(.vertical,6)
+                            .background(Color(move.type.name))
+                            .cornerRadius(16)
+                        Text(move.damageClass.name.capitalized)
+                            .font(.subheadline)
+                            .padding(.horizontal,8)
+                            .padding(.vertical,6)
+                            .background(Color(move.type.name))
+                            .cornerRadius(16)
                     }
                     Grid(alignment: .leading, verticalSpacing: 0) {
-                        GridRow {
-                            Text("\(move.power ?? 0)")
-                            Text("\(move.pp)")
-                            Text("\(move.accuracy ?? 0)")
-                        }
-                        Divider()
-                            .hidden()
                         GridRow {
                             Text("Power")
                             Text("PP")
                             Text("Accuracy")
+                        }
+                        Divider()
+                            .hidden()
+                        GridRow {
+                            Text("\(move.power ?? 0)")
+                            Text("\(move.pp)")
+                            Text("\(move.accuracy ?? 0)")
                         }
                     }
                 }
@@ -77,5 +88,6 @@ struct MovesView: View {
 struct MovesView_Previews: PreviewProvider {
     static var previews: some View {
         PokemonView()
+            .environmentObject(NavigationModel.shared)
     }
 }

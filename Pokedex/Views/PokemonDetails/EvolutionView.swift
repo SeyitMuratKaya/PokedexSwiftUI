@@ -102,5 +102,6 @@ extension EvolutionView {
 struct EvolutionView_Previews: PreviewProvider {
     static var previews: some View {
         PokemonView()
+            .environmentObject(NavigationModel.shared)
     }
 }

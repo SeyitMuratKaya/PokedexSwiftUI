@@ -54,5 +54,6 @@ struct BaseStatsView: View {
 struct BaseStatsView_Previews: PreviewProvider {
     static var previews: some View {
         PokemonView()
+            .environmentObject(NavigationModel.shared)
     }
 }

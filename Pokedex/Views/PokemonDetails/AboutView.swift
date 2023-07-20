@@ -108,5 +108,6 @@ struct AboutView: View {
 struct AboutInfo_Previews: PreviewProvider {
     static var previews: some View {
         PokemonView()
+            .environmentObject(NavigationModel.shared)
     }
 }
