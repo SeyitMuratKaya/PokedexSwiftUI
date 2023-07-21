@@ -85,7 +85,7 @@ struct PokemonView: View {
             
             TabView(selection: $tabSelection) {
                 AboutView(pokedexEntry: pokemonSpecies?.flavorTextEntries[0].flavorText, height: pokemon?.height, weight: pokemon?.weight, genderRate: pokemonSpecies?.genderRate).tag(InfoCategories.about)
-                BaseStatsView(stats: pokemon?.stats,pokemonType: pokemon?.types[0].type.name,pokemonName: pokemon?.name).tag(InfoCategories.stats)
+                BaseStatsView(stats: pokemon?.stats,pokemonTypes: pokemon?.types, pokemonName: pokemon?.name).tag(InfoCategories.stats)
                 EvolutionView(evolutionChain: evolutionChain).tag(InfoCategories.evolution)
                 MovesView(moves: pokemon?.moves).tag(InfoCategories.moves)
             }

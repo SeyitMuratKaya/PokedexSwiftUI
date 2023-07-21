@@ -149,4 +149,43 @@ class PokemonAPI {
             throw PokeError.invalidData
         }
     }
+    
+    static func fetchDamageRelations(for types: [PType]) async throws -> [TypeDetails] {
+        let endpoints: [String] = types.map { $0.type.url }
+    
+        return try await withThrowingTaskGroup(of: TypeDetails.self) { group in
+            var details: [TypeDetails] = []
+            for url in endpoints {
+                group.addTask {
+                    try await fetchDamageRelation(for: url)
+                }
+            }
+            
+            for try await relation in group {
+                details.append(relation)
+            }
+            
+            return details
+        }
+    }
+    
+    static func fetchDamageRelation(for url: String) async throws -> TypeDetails {
+        
+        guard let url = URL(string: url) else {
+            throw PokeError.invalidUrl
+        }
+        
+        let (data, response) = try await URLSession.shared.data(from: url)
+        
+        guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
+            throw PokeError.invalidResponse
+        }
+        
+        do {
+            let relation = try decoder.decode(TypeDetails.self, from: data)
+            return relation
+        }catch {
+            throw PokeError.invalidData
+        }
+    }
 }
