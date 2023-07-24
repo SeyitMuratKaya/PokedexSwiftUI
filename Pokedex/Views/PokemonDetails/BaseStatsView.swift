@@ -7,18 +7,6 @@
 //
 import SwiftUI
 
-struct BaseType {
-    var name: String
-    var offense: [TypeWithEffect]
-    var defense: [TypeWithEffect]
-}
-
-struct TypeWithEffect: Identifiable {
-    let id = UUID().uuidString
-    var name: String
-    var effectValue: Double
-}
-
 struct BaseStatsView: View {
     @State var baseTypes: [BaseType] = []
     var stats: [Stat]?
@@ -93,30 +81,7 @@ struct BaseStatsView: View {
             do{
                 let relations = try await PokemonAPI.fetchDamageRelations(for: pokemonTypes ?? [])
                 
-                for (index, relation) in relations.enumerated() {
-                    baseTypes.append(BaseType(name: relation.name, offense: [], defense: []))
-                    
-                    for i in relation.damageRelations.doubleDamageTo ?? [] {
-                        baseTypes[index].offense.append(TypeWithEffect(name: i.name, effectValue: 2.0))
-                    }
-                    for i in relation.damageRelations.halfDamageTo ?? [] {
-                        baseTypes[index].offense.append(TypeWithEffect(name: i.name, effectValue: 0.5))
-                    }
-                    for i in relation.damageRelations.noDamageTo ?? [] {
-                        baseTypes[index].offense.append(TypeWithEffect(name: i.name, effectValue: 0.0))
-                    }
-                    
-                    for i in relation.damageRelations.doubleDamageFrom ?? [] {
-                        baseTypes[index].defense.append(TypeWithEffect(name: i.name, effectValue: 2.0))
-                    }
-                    for i in relation.damageRelations.halfDamageFrom ?? [] {
-                        baseTypes[index].defense.append(TypeWithEffect(name: i.name, effectValue: 0.5))
-                    }
-                    for i in relation.damageRelations.noDamageFrom ?? [] {
-                        baseTypes[index].defense.append(TypeWithEffect(name: i.name, effectValue: 0.0))
-                    }
-                }
-                print(baseTypes)
+                createRelations(for: relations)
             }catch PokeError.invalidUrl {
                 print("invalid url")
             }catch PokeError.invalidResponse {
@@ -130,6 +95,34 @@ struct BaseStatsView: View {
         .background(.regularMaterial)
         .cornerRadius(16)
         .padding()
+    }
+}
+
+extension BaseStatsView {
+    private func createRelations(for relations: [TypeDetails]) {
+        for (index, relation) in relations.enumerated() {
+            baseTypes.append(BaseType(name: relation.name, offense: [], defense: []))
+            
+            for i in relation.damageRelations.doubleDamageTo ?? [] {
+                baseTypes[index].offense.append(TypeWithEffect(name: i.name, effectValue: 2.0))
+            }
+            for i in relation.damageRelations.halfDamageTo ?? [] {
+                baseTypes[index].offense.append(TypeWithEffect(name: i.name, effectValue: 0.5))
+            }
+            for i in relation.damageRelations.noDamageTo ?? [] {
+                baseTypes[index].offense.append(TypeWithEffect(name: i.name, effectValue: 0.0))
+            }
+            
+            for i in relation.damageRelations.doubleDamageFrom ?? [] {
+                baseTypes[index].defense.append(TypeWithEffect(name: i.name, effectValue: 2.0))
+            }
+            for i in relation.damageRelations.halfDamageFrom ?? [] {
+                baseTypes[index].defense.append(TypeWithEffect(name: i.name, effectValue: 0.5))
+            }
+            for i in relation.damageRelations.noDamageFrom ?? [] {
+                baseTypes[index].defense.append(TypeWithEffect(name: i.name, effectValue: 0.0))
+            }
+        }
     }
 }
 

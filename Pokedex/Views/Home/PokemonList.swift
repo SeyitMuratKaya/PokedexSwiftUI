@@ -11,20 +11,24 @@ struct PokemonList: View {
     @State private var pokemons: [Pokemon]?
     @EnvironmentObject private var navigationModel: NavigationModel
     
+    private var twoColumnGrid = [GridItem(.flexible()), GridItem(.flexible())]
+    
     var body: some View {
         NavigationStack(path: $navigationModel.path){
-            List {
-                ForEach(pokemons ?? [], id: \.name) { pokemon in
-                    Button { // (not using navigationlink) trick for removing navigation arrow
-                        navigationModel.path.append(pokemon)
-                    } label: {
-                        PokemonListItem(name: pokemon.name,pokedexId: pokemon.id,types: pokemon.types)
-                            .cornerRadius(8)
+            ScrollView {
+                LazyVGrid(columns: twoColumnGrid){
+                    ForEach(pokemons ?? [], id: \.name) { pokemon in
+                        Button { // (not using navigationlink) trick for removing navigation arrow
+                            navigationModel.path.append(pokemon)
+                        } label: {
+                            PokemonListItem(name: pokemon.name,pokedexId: pokemon.id,types: pokemon.types)
+                                .cornerRadius(16)
+                        }
+                        .buttonStyle(.plain)
                     }
                 }
-                .listRowSeparator(.hidden)
+                .padding()
             }
-            .listStyle(.plain)
             .navigationTitle("Pokemons")
             .navigationDestination(for: Pokemon.self, destination: { pokemon in
                 PokemonView(pokemon: pokemon)

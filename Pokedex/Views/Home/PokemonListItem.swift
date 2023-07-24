@@ -14,41 +14,46 @@ struct PokemonListItem: View {
     var types: [PType]?
         
     var body: some View {
-        VStack{
+        VStack(spacing: 0){
             HStack {
                 Spacer()
                 Text(String(format:"#%03d", pokedexId ?? 1))
                     .padding(.trailing)
-                    .padding(.top,8)
+                    .padding(.top,6)
                     .fontWeight(.bold)
                     .opacity(0.3)
             }
             
-            HStack {
-                Text(name?.capitalized ?? "")
-                    .padding(.leading)
-                    .font(.title2)
-                    .fontWeight(.bold)
-                    .foregroundColor(.white)
-                Spacer()
-            }
-            HStack {
-                VStack{
-                    ForEach(types ?? [], id: \.slot){ type in
-                        Text(type.type.name.uppercased())
-                            .font(.system(size: 10))
-                            .padding(.horizontal, 8.0)
-                            .padding(.vertical, 8.0)
-                            .foregroundColor(.white)
-                            .background(.ultraThinMaterial)
-                            .cornerRadius(48)
-                    }
+            VStack(alignment: .leading,spacing: 0){
+                HStack {
+                    Text(name?.capitalized ?? "")
+                        .font(.title2)
+                        .fontWeight(.bold)
+                        .foregroundColor(.white)
+                    Spacer()
                 }
-                .padding(.leading,8)
-                Spacer()
-                PokemonImage(id:pokedexId ,pokeballOffsetHeight: 10,pokeballOffsetWeight: 10)
-                .frame(width: 100, height: 100)
+                HStack {
+                    VStack{
+                        ForEach(types ?? [], id: \.slot){ type in
+                            Text(type.type.name.uppercased())
+                                .font(.system(size: 10))
+                                .padding(.horizontal, 8.0)
+                                .padding(.vertical, 8.0)
+                                .foregroundColor(.white)
+                                .background(.ultraThinMaterial)
+                                .cornerRadius(48)
+                                .scaledToFit()
+                                .minimumScaleFactor(0.5)
+                                .lineLimit(1)
+                                .bold()
+                        }
+                    }
+                    Spacer()
+                    PokemonImage(id:pokedexId ,pokeballOffsetHeight: 10,pokeballOffsetWeight: 5)
+                    .frame(width: 100, height: 100)
+                }
             }
+            .padding(.leading,8)
         }
         .background(Color(types?[0].type.name ?? "grass"))
     }

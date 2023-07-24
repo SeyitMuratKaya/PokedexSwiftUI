@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2F1A03A42A6BE37F00CC8A19 /* BaseType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F1A03A32A6BE37F00CC8A19 /* BaseType.swift */; };
 		2F1EEE662A65527F001C0CA5 /* PokemonImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F1EEE652A65527F001C0CA5 /* PokemonImage.swift */; };
 		2F1EEE682A655E24001C0CA5 /* EvolutionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F1EEE672A655E24001C0CA5 /* EvolutionModel.swift */; };
 		2F2073EC27C580B900BBFE1D /* PokemonSpecies.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F2073EB27C580B900BBFE1D /* PokemonSpecies.swift */; };
@@ -37,6 +38,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2F1A03A32A6BE37F00CC8A19 /* BaseType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseType.swift; sourceTree = "<group>"; };
 		2F1EEE652A65527F001C0CA5 /* PokemonImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokemonImage.swift; sourceTree = "<group>"; };
 		2F1EEE672A655E24001C0CA5 /* EvolutionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EvolutionModel.swift; sourceTree = "<group>"; };
 		2F2073EB27C580B900BBFE1D /* PokemonSpecies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokemonSpecies.swift; sourceTree = "<group>"; };
@@ -137,6 +139,7 @@
 				2F5C37112A66E30600B8F3B8 /* MoveDetail.swift */,
 				2FA810502A695489002B3C40 /* NavigationModel.swift */,
 				2FD19D4B2A69AB9D00A021C7 /* TypeDetails.swift */,
+				2F1A03A32A6BE37F00CC8A19 /* BaseType.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -278,6 +281,7 @@
 				2FD8216327C3FB4D00A49464 /* PokemonView.swift in Sources */,
 				2FD8216827C4005700A49464 /* Pokemon.swift in Sources */,
 				2F9E2C9927C01EB50080A543 /* PokedexApp.swift in Sources */,
+				2F1A03A42A6BE37F00CC8A19 /* BaseType.swift in Sources */,
 				2FA810512A695489002B3C40 /* NavigationModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
