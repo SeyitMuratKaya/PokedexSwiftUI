@@ -49,17 +49,24 @@ struct MovesView: View {
                     }
                     Grid(alignment: .leading, verticalSpacing: 0) {
                         GridRow {
-                            Text("Power")
-                            Text("PP")
-                            Text("Accuracy")
+                            HStack{
+                                Text("Power:")
+                                Text("\(move.power ?? 0)")
+                            }
+                            HStack{
+                                Divider()
+                                Text("PP:")
+                                Text("\(move.pp)")
+                            }
+                            HStack{
+                                Divider()
+                                Text("Accuracy:")
+                                Text("\(move.accuracy ?? 0)")
+                            }
                         }
+                        .padding(.vertical, 8)
                         Divider()
                             .hidden()
-                        GridRow {
-                            Text("\(move.power ?? 0)")
-                            Text("\(move.pp)")
-                            Text("\(move.accuracy ?? 0)")
-                        }
                     }
                 }
                 .padding()

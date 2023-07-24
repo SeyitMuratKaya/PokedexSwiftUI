@@ -10,14 +10,25 @@ import SwiftUI
 struct PokemonList: View {
     @State private var pokemons: [Pokemon]?
     @EnvironmentObject private var navigationModel: NavigationModel
+    @State private var searchText: String = ""
     
     private var twoColumnGrid = [GridItem(.flexible()), GridItem(.flexible())]
+    
+    var searchList: [Pokemon] {
+        let text = searchText.lowercased()
+        
+        if text.isEmpty {
+            return pokemons ?? []
+        }else {
+            return pokemons?.filter{ $0.name.contains(text) } ?? []
+        }
+    }
     
     var body: some View {
         NavigationStack(path: $navigationModel.path){
             ScrollView {
                 LazyVGrid(columns: twoColumnGrid){
-                    ForEach(pokemons ?? [], id: \.name) { pokemon in
+                    ForEach(searchList, id: \.name) { pokemon in
                         Button { // (not using navigationlink) trick for removing navigation arrow
                             navigationModel.path.append(pokemon)
                         } label: {
@@ -34,6 +45,7 @@ struct PokemonList: View {
                 PokemonView(pokemon: pokemon)
             })
         }
+        .searchable(text: $searchText)
         .task {
             do {
                 pokemons = try await PokemonAPI.fetchPokemons(from: 1, to: 151)
